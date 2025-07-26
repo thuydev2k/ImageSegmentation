@@ -1,7 +1,4 @@
-import matplotlib.pyplot as plt 
-import numpy as np 
-import torch
-
+import matplotlib.pyplot as plt
 
 def show_image(image,mask,pred_image = None):
     
