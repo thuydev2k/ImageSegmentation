@@ -3,7 +3,7 @@ import torch
 import helper
 
 from config import DEVICE
-from models.unet import SegmentationModel
+from model import SegmentationModel
 from utils import get_dataset
 
 model = SegmentationModel()

@@ -1,5 +1,5 @@
-CSV_FILE = '/data/train.csv'
-DATA_DIR = '/data/'
+CSV_FILE = 'Human-Segmentation-Dataset-master/train.csv'
+DATA_DIR = 'Human-Segmentation-Dataset-master'
 
 DEVICE = 'cuda'
 

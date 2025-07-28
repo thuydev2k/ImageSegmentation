@@ -5,7 +5,7 @@ import numpy as np
 from torch.utils.data import DataLoader
 
 from config import EPOCHS, DEVICE, LR, BATCH_SIZE
-from models.unet import SegmentationModel
+from model import SegmentationModel
 from utils import train_fn, eval_fn, get_dataset, show_original_image_and_mask, show_image_from_trainset
 
 show_original_image_and_mask()
