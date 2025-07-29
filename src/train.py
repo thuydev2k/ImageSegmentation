@@ -3,10 +3,11 @@ import torch
 import numpy as np
 
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from config import EPOCHS, DEVICE, LR, BATCH_SIZE
 from model import SegmentationModel
-from utils import train_fn, eval_fn, get_dataset, show_original_image_and_mask, show_image_from_trainset
+from utils import get_dataset, show_original_image_and_mask, show_image_from_trainset
 
 show_original_image_and_mask()
 
@@ -23,6 +24,38 @@ model.to(DEVICE)
 optimizer = torch.optim.Adam(model.parameters(), lr = LR)
 
 best_valid_loss = np.inf
+
+def train_fn(data_loader, model, optimizer):
+  model.train()
+  total_loss = 0.0
+
+  for images, masks in tqdm(data_loader):
+    images = images.to(DEVICE)
+    masks = masks.to(DEVICE)
+
+    optimizer.zero_grad()
+    logits, loss = model(images, masks)
+    loss.backward()
+    optimizer.step()
+
+    total_loss += loss.item()
+
+    return total_loss / len(data_loader)
+  
+def eval_fn(data_loader, model):
+  model.eval()
+  total_loss = 0.0
+
+  with torch.no_grad():
+    for images, masks in tqdm(data_loader):
+      images = images.to(DEVICE)
+      masks = masks.to(DEVICE)
+
+      logits, loss = model(images, masks)
+
+      total_loss += loss.item()
+
+  return total_loss / len(data_loader)
 
 for i in range(EPOCHS):
 

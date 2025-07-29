@@ -6,43 +6,10 @@ import matplotlib.pyplot as plt
 from helper import show_image
 
 from sklearn.model_selection import train_test_split
-from tqdm import tqdm
 
 from config import DEVICE, CSV_FILE
 from dataset import SegmentationDataset
 from augmentation import get_train_augs, get_valid_augs
-
-def train_fn(data_loader, model, optimizer):
-  model.train()
-  total_loss = 0.0
-
-  for images, masks in tqdm(data_loader):
-    images = images.to(DEVICE)
-    masks = masks.to(DEVICE)
-
-    optimizer.zero_grad()
-    logits, loss = model(images, masks)
-    loss.backward()
-    optimizer.step()
-
-    total_loss += loss.item()
-
-    return total_loss / len(data_loader)
-  
-def eval_fn(data_loader, model):
-  model.eval()
-  total_loss = 0.0
-
-  with torch.no_grad():
-    for images, masks in tqdm(data_loader):
-      images = images.to(DEVICE)
-      masks = masks.to(DEVICE)
-
-      logits, loss = model(images, masks)
-
-      total_loss += loss.item()
-
-  return total_loss / len(data_loader)
 
 def show_original_image_and_mask ():
     df = pd.read_csv(CSV_FILE)

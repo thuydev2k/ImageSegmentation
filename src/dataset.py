@@ -28,8 +28,6 @@ class SegmentationDataset(Dataset):
     mask = cv2.resize(mask, (IMAGE_SIZE, IMAGE_SIZE))
     mask = np.expand_dims(mask, axis= -1)  # => (H, W, 1)
 
-
-
     if self.augmentations:
       data = self.augmentations(image = image, mask = mask)
       image = data['image']
@@ -42,8 +40,5 @@ class SegmentationDataset(Dataset):
 
     image = torch.round(torch.Tensor(image) / 255.0)
     mask = torch.round(torch.Tensor(mask) / 255.0)
-
-    print("Image shape:", image.shape)
-    print("Mask shape:", mask.shape)
 
     return image, mask
