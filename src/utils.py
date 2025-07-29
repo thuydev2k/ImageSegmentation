@@ -3,7 +3,7 @@ import cv2
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import helper
+from helper import show_image
 
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
@@ -45,22 +45,19 @@ def eval_fn(data_loader, model):
   return total_loss / len(data_loader)
 
 def show_original_image_and_mask ():
-    print('test 1')
     df = pd.read_csv(CSV_FILE)
     df.head()
 
     row = df.iloc[5]
     image_path = row.images
-    print('image_path', image_path)
     mask_path = row.masks
-    print('mask_path', mask_path)
 
     image = cv2.imread(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE) / 255.0
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10,5))
+    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(10,5))
 
     ax1.set_title('IMAGE')
     ax1.imshow(image)
@@ -86,4 +83,4 @@ def show_image_from_trainset (trainset):
     idx = 32
 
     image, mask = trainset[idx]
-    helper.show_image(image, mask)
+    show_image(image, mask)
