@@ -27,7 +27,7 @@ best_valid_loss = np.inf
 for i in range(EPOCHS):
 
   train_loss = train_fn(trainloader, model, optimizer)
-  valid_loss = eval_fn(validloader, model, optimizer)
+  valid_loss = eval_fn(validloader, model)
 
   if valid_loss < best_valid_loss:
     torch.save(model.state_dict(), 'best_model.pt')

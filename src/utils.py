@@ -21,7 +21,7 @@ def train_fn(data_loader, model, optimizer):
     masks = masks.to(DEVICE)
 
     optimizer.zero_grad()
-    loss = model(images, masks)
+    logits, loss = model(images, masks)
     loss.backward()
     optimizer.step()
 
@@ -38,7 +38,7 @@ def eval_fn(data_loader, model):
       images = images.to(DEVICE)
       masks = masks.to(DEVICE)
 
-      loss = model(images, masks)
+      logits, loss = model(images, masks)
 
       total_loss += loss.item()
 

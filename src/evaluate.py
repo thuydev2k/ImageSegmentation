@@ -9,7 +9,8 @@ from utils import get_dataset
 model = SegmentationModel()
 model.to(DEVICE)
 
-validset = get_dataset()
+trainset, validset = get_dataset()
+print('validset', validset)
 
 idx = 6
 
