@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 
 def show_image(image,mask,pred_image = None):
     if pred_image == None:
-        print('2')
         f, (ax1, ax2) = plt.subplots(1, 2, figsize=(10,5))
         
         ax1.set_title('IMAGE')

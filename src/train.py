@@ -1,19 +1,51 @@
 import torch
-
+import cv2
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from sklearn.model_selection import train_test_split
 
-from config import EPOCHS, DEVICE, LR, BATCH_SIZE
+from config import EPOCHS, DEVICE, LR, BATCH_SIZE, CSV_FILE
 from model import SegmentationModel
-from utils import get_dataset, show_original_image_and_mask, show_image_from_trainset
+from dataset import SegmentationDataset
+from augmentation import get_train_augs, get_valid_augs
+from helper import show_image
 
-show_original_image_and_mask()
+df = pd.read_csv(CSV_FILE)
+df.head()
 
-trainset, validset = get_dataset()
+row = df.iloc[5]
+image_path = row.images
+mask_path = row.masks
 
-show_image_from_trainset(trainset)
+image = cv2.imread(image_path)
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE) / 255.0
+
+f, (ax1, ax2) = plt.subplots(1, 2, figsize=(10,5))
+
+ax1.set_title('IMAGE')
+ax1.imshow(image)
+
+ax2.set_title('GROUND TRUTH')
+ax2.imshow(mask,cmap = 'gray')
+
+df = pd.read_csv(CSV_FILE)
+df.head()
+
+train_df, valid_df = train_test_split(df, test_size = 0.2, random_state = 42)
+
+trainset = SegmentationDataset(train_df, get_train_augs())
+validset = SegmentationDataset(valid_df, get_valid_augs())
+
+idx = 32
+
+image, mask = trainset[idx]
+show_image(image, mask)
 
 trainloader = DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True)
 validloader = DataLoader(validset, batch_size=BATCH_SIZE)
